@@ -1,0 +1,32 @@
+version: 0.2
+env:
+  exported-variables:
+    - VERSION_NUMBER
+phases:
+  install:
+    runtime-versions:
+      java: corretto11
+  pre_build:
+    commands:
+      - VERSION_NUMBER=$(date +"%Y%m%d-%H%M%S")
+  build:
+    commands:
+      - mvn install -q -f main/pom.xml
+  post_build:
+    commands:
+      - aws s3 rm --recursive s3://${BUCKET}/${SERVICE}/${ENVIRONMENT}
+      - aws s3 cp main/lambda/target/lambda-LAMBDA-SNAPSHOT.jar s3://${BUCKET}/${SERVICE}/${ENVIRONMENT}/lambda-${VERSION_NUMBER}.jar
+      - cat deployment/openapi/specifications/admin.openapi.yaml deployment/openapi/specifications/schemas.openapi.yaml | aws s3 cp - s3://${BUCKET}/${SERVICE}/${ENVIRONMENT}/admin.openapi.yaml
+      - cat deployment/openapi/specifications/vehicle.openapi.yaml deployment/openapi/specifications/schemas.openapi.yaml | aws s3 cp - s3://${BUCKET}/${SERVICE}/${ENVIRONMENT}/vehicle.openapi.yaml
+      - cat deployment/openapi/specifications/customer.openapi.yaml deployment/openapi/specifications/schemas.openapi.yaml | aws s3 cp - s3://${BUCKET}/${SERVICE}/${ENVIRONMENT}/customer.openapi.yaml
+      - aws s3 cp deployment/openapi/templates/admin.yaml s3://${BUCKET}/${SERVICE}/${ENVIRONMENT}/admin.yaml
+      - aws s3 cp deployment/openapi/templates/vehicle.yaml s3://${BUCKET}/${SERVICE}/${ENVIRONMENT}/vehicle.yaml
+      - aws s3 cp deployment/openapi/templates/master.yaml s3://${BUCKET}/${SERVICE}/${ENVIRONMENT}/master.yaml
+      - aws s3 cp deployment/openapi/templates/customer.yaml s3://${BUCKET}/${SERVICE}/${ENVIRONMENT}/customer.yaml
+      - aws s3 cp deployment/openapi/templates/services.yaml s3://${BUCKET}/${SERVICE}/${ENVIRONMENT}/services.yaml
+      - aws s3 cp deployment/openapi/templates/roles.yaml s3://${BUCKET}/${SERVICE}/${ENVIRONMENT}/roles.yaml
+
+
+
+
+
