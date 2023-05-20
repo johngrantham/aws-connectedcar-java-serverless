@@ -85,8 +85,6 @@ Resources:
           Type: Api
           Properties:
             Path: /admin/dealers
-            RequestParameters:
-              - method.request.querystring.ping
             Method: POST
             RestApiId: !Ref AdminAPI
       AutoPublishAlias: !Ref StageName
