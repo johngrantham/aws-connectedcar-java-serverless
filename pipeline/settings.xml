@@ -2,8 +2,14 @@
   <servers>
     <server>
       <id>github</id>
-      <username>${env.USERNAME}</username>
-      <password>${env.TOKEN}</password>
+      <configuration>
+		    <httpHeaders>
+		      <property>
+			      <name>Authorization</name>
+			      <value>Bearer ${env.TOKEN}</value>
+          </property>
+        </httpHeaders>
+      </configuration>
     </server>
   </servers>
 </settings> 
