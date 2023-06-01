@@ -13,11 +13,13 @@ phases:
     commands:
       - VERSION_NUMBER=$(date +"%Y%m%d-%H%M%S")
       - cp pipeline/settings.xml ~/.m2
+      - export SERVER_USERNAME=${USERNAME}
+      - export SERVER_PASSWORD=${TOKEN}
   build:
     commands:
-      - echo "username=${USERNAME}"
-      - echo "token=${TOKEN}"
-      - mvn install -q -f main/pom.xml -Dserver.username=${USERNAME} -Dserver.password=${TOKEN}
+      - echo "username=${SERVER_USERNAME}"
+      - echo "password=${SERVER_PASSWORD}"
+      - mvn install -q -f main/pom.xml
   post_build:
     commands:
       - aws s3 rm --recursive s3://${BUCKET}/${SERVICE}/${ENVIRONMENT}
