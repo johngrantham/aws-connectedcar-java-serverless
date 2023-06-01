@@ -11,7 +11,7 @@ phases:
   pre_build:
     commands:
       - VERSION_NUMBER=$(date +"%Y%m%d-%H%M%S")
-      - cp deployment/sam/maven/settings.xml ~/.m2
+      - cp pipeline/settings.xml ~/.m2
       - sed -i 's/personal-access-token/${TOKEN}/g' ~/.m2/settings.xml
   build:
     commands:
