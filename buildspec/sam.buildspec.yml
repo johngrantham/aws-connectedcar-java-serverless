@@ -2,6 +2,9 @@ version: 0.2
 env:
   exported-variables:
     - VERSION_NUMBER
+  secrets-manager:
+    USERNAME: "github-username:username"
+    TOKEN: "personal-access-token:token"
 phases:
   install:
     runtime-versions:
@@ -11,7 +14,7 @@ phases:
       - VERSION_NUMBER=$(date +"%Y%m%d-%H%M%S")
   build:
     commands:
-      - mvn package -q -f main/pom.xml -s pipeline/settings.xml
+      - mvn install -q -f main/pom.xml -s pipeline/settings.xml
   post_build:
     commands:
       - aws s3 rm --recursive s3://${BUCKET}/${SERVICE}/${ENVIRONMENT}
