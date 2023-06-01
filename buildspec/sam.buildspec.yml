@@ -2,9 +2,6 @@ version: 0.2
 env:
   exported-variables:
     - VERSION_NUMBER
-  secrets-manager:
-    USERNAME: "github-username:username"    
-    TOKEN: "personal-access-token:token"    
 phases:
   install:
     runtime-versions:
