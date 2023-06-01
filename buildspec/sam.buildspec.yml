@@ -2,6 +2,8 @@ version: 0.2
 env:
   exported-variables:
     - VERSION_NUMBER
+  secrets-manager:
+    TOKEN: "personal-access-token:token"    
 phases:
   install:
     runtime-versions:
@@ -9,6 +11,8 @@ phases:
   pre_build:
     commands:
       - VERSION_NUMBER=$(date +"%Y%m%d-%H%M%S")
+      - cp deployment/sam/maven/settings.xml ~/.m2
+      - sed -i 's/personal-access-token/${TOKEN}/g' ~/.m2/settings.xml
   build:
     commands:
       - mvn install -q -f main/pom.xml
