@@ -2,7 +2,7 @@
   <servers>
     <server>
       <id>github</id>
-      <username>username</username>
+      <username>github-username</username>
       <password>personal-access-token</password>
     </server>
   </servers>
