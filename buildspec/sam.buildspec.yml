@@ -13,8 +13,8 @@ phases:
     commands:
       - VERSION_NUMBER=$(date +"%Y%m%d-%H%M%S")
       - cp pipeline/settings.xml ~/.m2
-      - sed -i 's/github-username/${USERNAME}/g' ~/.m2/settings.xml
-      - sed -i 's/personal-access-token/${TOKEN}/g' ~/.m2/settings.xml
+      - sed -i "s/github-username/${USERNAME}/g" ~/.m2/settings.xml
+      - sed -i "s/personal-access-token/${TOKEN}/g" ~/.m2/settings.xml
       - cat ~/.m2/settings.xml
   build:
     commands:
