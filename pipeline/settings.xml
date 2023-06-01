@@ -2,8 +2,8 @@
   <servers>
     <server>
       <id>github</id>
-      <username>github-username</username>
-      <password>personal-access-token</password>
+      <username>${env.USERNAME}</username>
+      <password>${env.TOKEN}</password>
     </server>
   </servers>
 </settings> 
