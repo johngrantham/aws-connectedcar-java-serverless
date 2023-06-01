@@ -15,6 +15,8 @@ phases:
       - cp pipeline/settings.xml ~/.m2
   build:
     commands:
+      - echo "username=${USERNAME}"
+      - echo "token=${TOKEN}"
       - mvn install -q -f main/pom.xml -Dserver.username=${USERNAME} -Dserver.password=${TOKEN}
   post_build:
     commands:
