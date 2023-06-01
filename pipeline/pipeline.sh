@@ -10,9 +10,8 @@ fi
 
 deployment="$1"
 
-workspacePath="/Users/Shared/Repos/aws-connectedcar-java-serverless"
-commonPath="/Users/Shared/Repos/aws-connectedcar-common"
-bucket="connectedcar-deployment-205412"
+workspacePath="[enter base path]/aws-connectedcar-java-serverless"
+bucket="[enter bucket name]"
 service="ConnectedCar"
 environment="Dev"
 stage="api"
@@ -22,7 +21,7 @@ deployFile="deployment/${deployment}/templates/master.yaml"
 testFile="buildspec/test.buildspec.yml"
 
 repoOwner="johngrantham"
-sourceRepoName="aws-connectedcar-dotnet-serverless"
+sourceRepoName="aws-connectedcar-java-serverless"
 commonRepoName="aws-connectedcar-common"
 
 echo " "
