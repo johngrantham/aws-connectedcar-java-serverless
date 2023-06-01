@@ -12,6 +12,9 @@
     <repository>
       <id>github</id>
       <url>https://github.com/johngrantham/aws-connectedcar-java-core</url>
+      <snapshots>        
+        <enabled>true</enabled>                                             
+      </snapshots> 
     </repository>
   </repositories>
 
