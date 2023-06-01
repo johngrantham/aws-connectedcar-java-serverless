@@ -6,7 +6,7 @@
       "command": "mvn",
       "type": "shell",
       "args": [
-          "package",
+          "install",
           "-f",
           "${workspaceFolder}/main/pom.xml"
       ],
