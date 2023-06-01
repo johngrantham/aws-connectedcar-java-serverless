@@ -1,23 +1,9 @@
 <settings>
-  <profiles>
-    <profile>
-      <id>default</id>
-      <repositories>
-        <repository>
-          <id>github</id>
-          <url>https://github.com/johngrantham/aws-connectedcar-java-core</url>
-        </repository>
-      </repositories>
-    </profile>
-  </profiles>
-  <activeProfiles>
-      <activeProfile>default</activeProfile>
-  </activeProfiles>
   <servers>
     <server>
       <id>github</id>
-      <username>${github.username}</username>
-      <password>${github.password}</password>
+      <username>${env.USERNAME}</username>
+      <password>${env.TOKEN}</password>
     </server>
   </servers>
 </settings> 
