@@ -12,12 +12,9 @@ phases:
   pre_build:
     commands:
       - VERSION_NUMBER=$(date +"%Y%m%d-%H%M%S")
-      - cp pipeline/settings.xml /root/.m2/settings.xml
-      - export SERVER_USERNAME=${USERNAME}
-      - export SERVER_PASSWORD=${TOKEN}
   build:
     commands:
-      - mvn package -q -f main/pom.xml
+      - mvn package -q -f main/pom.xml -s /pipeline/settings.xml -Dgithub.username=${USERNAME} -Dgithub.password=${TOKEN}
   post_build:
     commands:
       - aws s3 rm --recursive s3://${BUCKET}/${SERVICE}/${ENVIRONMENT}
