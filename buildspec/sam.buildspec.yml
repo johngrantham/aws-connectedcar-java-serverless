@@ -12,13 +12,11 @@ phases:
   pre_build:
     commands:
       - VERSION_NUMBER=$(date +"%Y%m%d-%H%M%S")
-      - cp pipeline/settings.xml ~/.m2
+      - cp pipeline/settings.xml /root/.m2/settings.xml
       - export SERVER_USERNAME=${USERNAME}
       - export SERVER_PASSWORD=${TOKEN}
   build:
     commands:
-      - echo "username=${SERVER_USERNAME}"
-      - echo "password=${SERVER_PASSWORD}"
       - mvn install -q -f main/pom.xml
   post_build:
     commands:
