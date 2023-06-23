@@ -11,7 +11,7 @@ mvn clean install -q -f "${workspacePath}/main/pom.xml"
 
 Write-Host " "
 Write-Host "*************************************************************"
-Write-Host "*              Uploading the Lambda jar files               *"
+Write-Host "*              Uploading the Lambda jar file                *"
 Write-Host "*************************************************************"
 Write-Host " "
 
