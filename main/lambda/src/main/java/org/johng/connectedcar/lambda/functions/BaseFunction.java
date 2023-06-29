@@ -4,7 +4,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 
 import org.johng.connectedcar.core.services.context.IServiceContext;
-import org.johng.connectedcar.core.services.modules.NonTracingModule;
+import org.johng.connectedcar.core.services.modules.TracingModule;
 import org.johng.connectedcar.core.shared.orchestrators.IAdminOrchestrator;
 import org.johng.connectedcar.core.shared.orchestrators.ICustomerOrchestrator;
 import org.johng.connectedcar.core.shared.services.IAppointmentService;
@@ -21,7 +21,7 @@ public abstract class BaseFunction {
   private Injector injector;
   
   protected BaseFunction() {
-    injector = Guice.createInjector(new NonTracingModule());
+    injector = Guice.createInjector(new TracingModule());
   }
 
   protected BaseFunction(Injector injector) {
