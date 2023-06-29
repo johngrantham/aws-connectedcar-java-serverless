@@ -1,24 +1,6 @@
 #!/bin/zsh
 
-source config.sh
-
-echo " "
-echo "*************************************************************"
-echo "*        Uploading the OpenApi files to the S3 folder       *"
-echo "*************************************************************"
-echo " "
-
-cat ${workspacePath}/deployment/openapi/specifications/admin.openapi.yaml \
-    ${workspacePath}/deployment/openapi/specifications/schemas.openapi.yaml \
-    | aws s3 cp - s3://${bucket}/${service}/${environment}/admin.openapi.yaml
-
-cat ${workspacePath}/deployment/openapi/specifications/vehicle.openapi.yaml \
-    ${workspacePath}/deployment/openapi/specifications/schemas.openapi.yaml \
-    | aws s3 cp - s3://${bucket}/${service}/${environment}/vehicle.openapi.yaml
-
-cat ${workspacePath}/deployment/openapi/specifications/customer.openapi.yaml \
-    ${workspacePath}/deployment/openapi/specifications/schemas.openapi.yaml \
-    | aws s3 cp - s3://${bucket}/${service}/${environment}/customer.openapi.yaml
+source config.zsh
 
 echo " "
 echo "*************************************************************"
@@ -27,23 +9,23 @@ echo "*************************************************************"
 echo " "
 
 aws s3 cp \
-    ${workspacePath}/deployment/openapi/templates/services.yaml \
+    ${workspacePath}/deployment/sam/templates/services.yaml \
     s3://${bucket}/${service}/${environment}/services.yaml
 
 aws s3 cp \
-    ${workspacePath}/deployment/openapi/templates/roles.yaml \
+    ${workspacePath}/deployment/sam/templates/roles.yaml \
     s3://${bucket}/${service}/${environment}/roles.yaml
 
 aws s3 cp \
-    ${workspacePath}/deployment/openapi/templates/customer.yaml \
+    ${workspacePath}/deployment/sam/templates/customer.yaml \
     s3://${bucket}/${service}/${environment}/customer.yaml
 
 aws s3 cp \
-    ${workspacePath}/deployment/openapi/templates/admin.yaml \
+    ${workspacePath}/deployment/sam/templates/admin.yaml \
     s3://${bucket}/${service}/${environment}/admin.yaml
 
 aws s3 cp \
-    ${workspacePath}/deployment/openapi/templates/vehicle.yaml \
+    ${workspacePath}/deployment/sam/templates/vehicle.yaml \
     s3://${bucket}/${service}/${environment}/vehicle.yaml
 
 if ! aws cloudformation describe-stacks --stack-name ${service}${environment} &>/dev/null ; then
@@ -56,7 +38,7 @@ echo " "
 
 aws cloudformation create-stack \
     --stack-name ${service}${environment} \
-    --template-body file://${workspacePath}/deployment/openapi/templates/master.yaml \
+    --template-body file://${workspacePath}/deployment/sam/templates/master.yaml \
     --parameters ParameterKey=BucketName,ParameterValue=${bucket} \
                  ParameterKey=ServiceName,ParameterValue=${service} \
                  ParameterKey=EnvironmentName,ParameterValue=${environment} \
@@ -83,7 +65,7 @@ domain=$(aws cloudformation describe-stacks \
 
 aws cloudformation update-stack \
     --stack-name ${service}${environment} \
-    --template-body file://${workspacePath}/deployment/openapi/templates/master.yaml \
+    --template-body file://${workspacePath}/deployment/sam/templates/master.yaml \
     --parameters ParameterKey=BucketName,ParameterValue=${bucket} \
                  ParameterKey=ServiceName,ParameterValue=${service} \
                  ParameterKey=EnvironmentName,ParameterValue=${environment} \
@@ -106,6 +88,13 @@ echo " "
 aws cloudformation describe-stacks \
     --stack-name ${service}${environment} \
     --query 'Stacks[].Outputs[]' \
+    --output table
+
+echo " "
+
+aws apigateway get-api-keys \
+    --query 'items[?contains(name,`Admin`)==`true`].value' \
+    --include-values \
     --output table
 
 echo " "

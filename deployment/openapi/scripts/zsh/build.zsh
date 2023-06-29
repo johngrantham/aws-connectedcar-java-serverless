@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-source config.sh
+source config.zsh
 
 echo " "
 echo "*************************************************************"
@@ -17,7 +17,10 @@ echo "*************************************************************"
 echo " "
 
 aws s3 cp \
-    ${workspacePath}/main/lambda/target/lambda-LAMBDA-SNAPSHOT.jar \
-    s3://${bucket}/${service}/${environment}/lambda-${version}.jar
+    ${workspacePath}/main/authorizers/target/authorizers-AUTHORIZERS-SNAPSHOT.jar \
+    s3://${bucket}/${service}/${environment}/authorizers-${version}.jar
 
-echo " "
+aws s3 cp \
+    ${workspacePath}/main/functions/target/functions-FUNCTIONS-SNAPSHOT.jar \
+    s3://${bucket}/${service}/${environment}/functions-${version}.jar
+
