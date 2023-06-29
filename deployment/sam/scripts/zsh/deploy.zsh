@@ -92,9 +92,3 @@ aws cloudformation describe-stacks \
 
 echo " "
 
-aws apigateway get-api-keys \
-    --query 'items[?contains(name,`Admin`)==`true`].value' \
-    --include-values \
-    --output table
-
-echo " "
