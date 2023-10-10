@@ -55,18 +55,18 @@ public abstract class BaseRequestFunction extends BaseFunction {
     mapper.registerModule(new JavaTimeModule());
   }
   
-	protected APIGatewayProxyResponseEvent process(ProcessFunc func, Context context) {
-		try {
-			return func.execute();
-		}
-		catch (Exception e) {
+  protected APIGatewayProxyResponseEvent process(ProcessFunc func, Context context) {
+    try {
+      return func.execute();
+    }
+    catch (Exception e) {
       StringWriter sw = new StringWriter();
       e.printStackTrace(new PrintWriter(sw));
       context.getLogger().log(sw.toString());
 
       return new APIGatewayProxyResponseEvent().withStatusCode(HttpStatus.SC_BAD_REQUEST);
-		}
-	}
+    }
+  }
 
   protected <T extends Validatable> T deserializeItem(APIGatewayProxyRequestEvent request, Class<T> classType) throws Exception {
     if (StringUtils.isBlank(request.getBody()))
