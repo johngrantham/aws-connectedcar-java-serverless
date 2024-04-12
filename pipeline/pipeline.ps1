@@ -10,10 +10,8 @@ elseif (("${deployment}" -ne "sam") -and ("${deployment}" -ne "openapi")) {
     return
 }
 
-$workspacePath="[enter base path]/aws-connectedcar-java-lambda"
-$commonPath="[enter base path]/aws-connectedcar-extras"
+$workspacePath="[enter base path]/aws-connectedcar-java-serverless"
 $bucket="[enter bucket name]"
-$zip="connectedcar.zip"
 $service="ConnectedCar"
 $environment="Dev"
 $stage="api"
@@ -22,47 +20,13 @@ $buildFile="buildspec/${deployment}.buildspec.yml"
 $deployFile="deployment/${deployment}/templates/master.yaml"
 $testFile="buildspec/test.buildspec.yml"
 
+$repoOwner="johngrantham"
+$sourceRepoName="aws-connectedcar-java-serverless"
+$commonRepoName="aws-connectedcar-common"
+
 Import-Module AWSPowerShell.NetCore
 
 $ErrorActionPreference = "Stop"
-
-Write-Host " "
-Write-Host "*************************************************************"
-Write-Host "*                 Performing a maven clean                  *"
-Write-Host "*************************************************************"
-Write-Host " "
-
-mvn clean -q -f ${workspacePath}/main/pom.xml
-
-Write-Host " "
-Write-Host "*************************************************************"
-Write-Host "*          Creating zip file of solution and extras         *"
-Write-Host "*************************************************************"
-Write-Host " "
-
-if (Test-Path ${env:TEMP}/${zip}) {
-    Remove-Item ${env:TEMP}/${zip}
-}
-
-Compress-Archive `
-    -Path ${workspacePath}\* `
-    -DestinationPath ${env:TEMP}/${zip}
-
-Compress-Archive `
-    -Path ${commonPath}\* `
-    -Update `
-    -DestinationPath ${env:TEMP}/${zip}
-
-Write-Host " "
-Write-Host "*************************************************************"
-Write-Host "*              Uploading zip file to S3 folder              *"
-Write-Host "*************************************************************"
-Write-Host " "
-
-Write-S3Object `
-    -BucketName ${bucket} `
-    -File ${env:TEMP}/${zip} `
-    -Key ${service}/Repo/${zip}
 
 Write-Host " "
 Write-Host "*************************************************************"
@@ -82,7 +46,10 @@ New-CFNStack `
                   @{ ParameterKey="StageName"; ParameterValue="${stage}" }, `
                   @{ ParameterKey="BuildFile"; ParameterValue="${buildFile}" }, `
                   @{ ParameterKey="TestFile"; ParameterValue="${testFile}" }, `
-                  @{ ParameterKey="DeployFile"; ParameterValue="${deployFile}" }) `
+                  @{ ParameterKey="DeployFile"; ParameterValue="${deployFile}" }, `
+                  @{ ParameterKey="RepoOwner"; ParameterValue="${repoOwner}" }, `
+                  @{ ParameterKey="SourceRepoName"; ParameterValue="${sourceRepoName}" }, `
+                  @{ ParameterKey="CommonRepoName"; ParameterValue="${commonRepoName}" }) `
     -Capability CAPABILITY_IAM,CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
 
 Write-Host " "
